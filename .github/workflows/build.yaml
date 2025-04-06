@@ -46,7 +46,6 @@ jobs:
             zerofree \
             zip \
             dosfstools \
-            bsdtar \
             libarchive-tools \
             libcap2-bin \
             grep \
