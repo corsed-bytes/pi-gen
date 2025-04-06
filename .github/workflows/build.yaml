@@ -1,0 +1,46 @@
+name: Build Raspberry Pi OS Image
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:  # Allow manual runs
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+        with:
+          platforms: arm
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Install Docker dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y qemu-user-static binfmt-support
+
+      - name: Enable binfmt_misc
+        run: |
+          docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+
+      - name: Run pi-gen build
+        env:
+          IMG_NAME: praxis-os
+          ENABLE_SSH: 0
+          STAGE_LIST: "stage0 stage1 stage-custom"
+          LOCALE_DEFAULT: "en_US.UTF-8"
+        run: |
+          sudo ./build.sh
+
+      - name: Upload image artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: raspberrypi-os-image
+          path: deploy/*.zip
