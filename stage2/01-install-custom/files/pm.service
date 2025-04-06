@@ -1,0 +1,12 @@
+[Unit]
+Description=Run Package Manager
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/opt/package-manager/package-manager.lin.armv7
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
