@@ -37,6 +37,31 @@ jobs:
           STAGE_LIST: "stage0 stage1 stage-custom"
           LOCALE_DEFAULT: "en_US.UTF-8"
         run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            coreutils \
+            quilt \
+            parted \
+            debootstrap \
+            zerofree \
+            zip \
+            dosfstools \
+            bsdtar \
+            libarchive-tools \
+            libcap2-bin \
+            grep \
+            rsync \
+            xz-utils \
+            file \
+            git \
+            curl \
+            bc \
+            qemu-user-static \
+            binfmt-support \
+            systemd-container \
+            kmod \
+            e2fsprogs \
+            arch-test
           sudo ./build.sh
 
       - name: Upload image artifacts
